@@ -5,6 +5,7 @@ from prod_app.models import Product
 
 SessionFactory = sessionmaker(bind=engine)
 
+
 @gen.coroutine
 def query_product_by_name(name):
     session = SessionFactory()
@@ -15,9 +16,9 @@ def query_product_by_name(name):
     finally:
         session.close()
 
+
 def query_add_product_by_name(name):
     session = SessionFactory()
     prod = Product(name=name)
     session.add(prod)
     session.close()
-
