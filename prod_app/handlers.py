@@ -27,7 +27,7 @@ class CreateProductHandler(RequestHandler):
 
 
 class GetProductHandler(RequestHandler):
-    def get(self, name: str):
+    def get(self, name: str) -> None:
         try:
             current_product_params = get_product_by_name(name)
             self.set_status(201)

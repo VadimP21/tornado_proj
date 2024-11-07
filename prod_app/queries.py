@@ -11,6 +11,7 @@ from sqlalchemy import select
 #     # print(result.keys())
 #     return product_id
 
+
 def create_product(name: str) -> dict:
     with SessionFactory() as session:
         new_product = Product(name=name)
