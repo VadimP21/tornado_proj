@@ -3,31 +3,6 @@ from prod_app.settings import SessionFactory
 from sqlalchemy import select
 
 
-# stmt = insert(Product).values(name=name)
-# with engine.connect() as conn:
-#     result = conn.execute(stmt)
-#     conn.commit()
-#     product_id = result.inserted_primary_key[0]
-#     # print(result.keys())
-#     return product_id
-
-# stmt = select(User).options(selectinload(User.addresses)).order_by(User.id)- OneToMany
-# stmt = (
-# ...     select(Address)
-# ...     .options(joinedload(Address.user, innerjoin=True))
-# ...     .order_by(Address.id)
-# ... ) - ManyTo
-
-# stmt = (
-# ...     select(Address)
-# ...     .join(Address.user)
-# ...     .where(User.name == "pkrabs")
-# ...     .options(contains_eager(Address.user))
-# ...     .order_by(Address.id)
-# ... ) -
-
-# a1 = Address(email_address="pearl.krabs@gmail.com")
-# u1.addresses.append(a1)
 
 def create_product(name: str) -> dict:
     with SessionFactory() as session:
