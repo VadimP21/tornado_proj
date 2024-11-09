@@ -3,8 +3,8 @@ import os
 
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, text
-from sqlalchemy.ext.asyncio import create_async_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from sqlalchemy.orm import sessionmaker, DeclarativeBase
 
 load_dotenv()
 
@@ -22,4 +22,11 @@ async_engine = create_async_engine(
     # max_overflow=10,
 )
 
-SessionFactory = sessionmaker(autocommit=False, autoflush=False, bind=sync_engine)
+session_factory = sessionmaker(autocommit=False, autoflush=False, bind=sync_engine)
+async_session_factory = async_sessionmaker(async_engine)
+
+class BaseProj(DeclarativeBase):
+    pass
+
+class Base(DeclarativeBase):
+    pass
