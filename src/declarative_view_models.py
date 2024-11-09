@@ -23,7 +23,7 @@ class Product(Base):
     __tablename__ = "product"
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30))
-    category_id : Mapped[int | None] = mapped_column(ForeignKey("category.id"))
+    category_id: Mapped[int | None] = mapped_column(ForeignKey("category.id"))
     category: Mapped[Category | None] = relationship(back_populates="products")
 
     def __repr__(self) -> str:

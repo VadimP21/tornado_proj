@@ -4,8 +4,8 @@ import tornado.ioloop
 import tornado.web
 
 from handlers import MainHandler, GetProductHandler, CreateProductHandler
-from prod_app.models import Base
-from prod_app.settings import engine
+from src.declarative_view_models import Base
+from src.database import engine
 
 
 def make_app():

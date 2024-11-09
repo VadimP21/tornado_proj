@@ -4,9 +4,9 @@ from tornado.web import RequestHandler
 
 from sqlalchemy import insert
 
-from prod_app.models import Product
-from prod_app.queries import create_product, get_product_by_name
-from prod_app.settings import engine, SessionFactory
+from src.declarative_view_models import Product
+from src.queries import create_product, get_product_by_name
+from src.database import engine, SessionFactory
 
 
 class MainHandler(RequestHandler):

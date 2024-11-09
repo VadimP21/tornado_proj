@@ -1,0 +1,25 @@
+sudo su - postgres
+
+psql
+
+
+Если не создан пользователь:
+CREATE USER anton WITH PASSWORD 'j8IIj_p0kZ';
+
+Теперь создайте базу данных. Мы назвали её skillbox_test_db:
+CREATE DATABASE skillbox_test_db;
+
+GRANT ALL PRIVILEGES ON DATABASE skillbox_test_db to anton;
+
+Готово!!!
+
+
+By docker:
+
+Запустите контейнер с PostgreSQL, используя команду docker run. Например:
+
+docker run --name my-postgres-container -e POSTGRES_PASSWORD=mysecretpassword -p 5432:5432 -d postgres
+
+Подключитесь к контейнеру с помощью команды docker exec, чтобы выполнить команды внутри контейнера:
+
+docker exec -it my-postgres-container psql -U postgres
