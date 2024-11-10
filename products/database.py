@@ -26,11 +26,6 @@ async_engine = create_async_engine(
 session_factory = sessionmaker(sync_engine)
 async_session_factory = async_sessionmaker(async_engine)
 
-
-class BaseProj(DeclarativeBase):
-    pass
-
-
 str_255 = Annotated[str, 255]  # Переиспользование типов на уровне базы данных
 
 

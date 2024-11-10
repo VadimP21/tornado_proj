@@ -1,18 +1,30 @@
-from database import session_factory, async_session_factory
-from declarative_view_models import WorkersOrm
+from database import session_factory, async_session_factory, sync_engine, Base
+from models import WorkersOrm
 
 
-def insert_data():
-    with session_factory() as session:
-        worker_bobr = WorkersOrm(username="Bobby")
-        worker_volk = WorkersOrm(username="Volkkk")
-        session.add_all([worker_volk, worker_bobr])
-        session.commit()
+class SyncORM:
+
+    @staticmethod
+    def create_tables():
+        sync_engine.echo = False
+        Base.metadata.drop_all(sync_engine)
+        Base.metadata.create_all(sync_engine)
+        sync_engine.echo = True
+
+    @staticmethod
+    def insert_workers():
+        with session_factory() as session:
+            worker_jack = WorkersOrm(username="Jack")
+            worker_mitchel = WorkersOrm(username="Mitchel")
+            session.add_all([worker_mitchel, worker_jack])
+            session.commit()
 
 
-async def insert_data_async():
-    async with async_session_factory() as session:
-        worker_bobr = WorkersOrm(username="Bobby1")
-        worker_volk = WorkersOrm(username="Volkkk1")
-        session.add_all([worker_volk, worker_bobr])
-        await session.commit()
+class AsyncOrm:
+    @staticmethod
+    async def insert_data_async():
+        async with async_session_factory() as session:
+            worker_jack = WorkersOrm(username="Jack")
+            worker_mitchel = WorkersOrm(username="Mitchel")
+            session.add_all([worker_mitchel, worker_jack])
+            await session.commit()

@@ -1,9 +1,7 @@
-import asyncio
-
 import tornado.ioloop
 import tornado.web
 
-from handlers import MainHandler, GetProductHandler, CreateProductHandler
+from products.handlers import MainHandler, GetProductHandler, CreateProductHandler
 from src.declarative_view_models import Base
 from src.database import engine
 

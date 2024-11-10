@@ -7,30 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship, MappedColumn
 
 from database import BaseProj, Base
 
-
-class Category(BaseProj):
-    __tablename__ = "category"
-
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(30))
-    products: Mapped[List["Product"]] = relationship(back_populates="category")
-
-    def __repr__(self) -> str:
-        return f"Category(id={self.id!r}, name={self.name!r})"
-
-
-class Product(BaseProj):
-    __tablename__ = "product"
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(30))
-    category_id: Mapped[int | None] = mapped_column(ForeignKey("category.id"))
-    category: Mapped[Category | None] = relationship(back_populates="products")
-
-    def __repr__(self) -> str:
-        return f"Product(id={self.id!r}, name={self.name!r})"
-
-
-# Переиспользование типов
+# Переиспользование типов на уровне модуля
 int_pk_type = Annotated[int, mapped_column(primary_key=True)]
 created_at_type = Annotated[
     datetime.datetime,
@@ -45,7 +22,7 @@ updated_at_type = Annotated[
 
 
 class WorkersOrm(Base):
-    __tablename__ = "users"
+    __tablename__ = "workers"
     id: Mapped[int_pk_type]
     username: Mapped[str]
 
