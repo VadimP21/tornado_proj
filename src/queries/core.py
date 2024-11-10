@@ -1,23 +1,12 @@
+
 from sqlalchemy import text
+from sqlalchemy.dialects.mysql import insert
 
 from declarative_view_models import Base
+from imperative_view_models import users_table
 from src.database import sync_engine, async_engine
 from src.imperative_view_models import metadata_obj
 
-with sync_engine.connect() as conn:
-    res = conn.execute(text("SELECT VERSION()"))
-    print(res.first())
-
-
-async def get_123():
-    async with async_engine.connect() as conn:
-        result = await conn.execute(text("SELECT VERSION()"))
-        print(result.first())
-
-
-def create_tables():
-    metadata_obj.create_all(sync_engine)
-    # Base.metadata.create_all(sync_engine)
 
 # FROM LEGACY FILE queries.py
 # from src.declarative_view_models import Product
@@ -53,3 +42,32 @@ def create_tables():
 #             }
 #             result.append(prod_params)
 #         return result
+
+async def get_123():
+    async with async_engine.connect() as conn:
+        result = await conn.execute(text("SELECT VERSION()"))
+
+
+def create_tables():
+    sync_engine.echo = False
+    metadata_obj.drop_all(sync_engine)
+    metadata_obj.create_all(sync_engine)
+    sync_engine.echo = True
+
+
+def insert_data():
+    with sync_engine.connect() as conn:
+        # Сырой запрос
+        # stmt = """INSERT INTO users (username) VALUES
+        # ('BOBR'),
+        # ('Volk');
+        # """
+        # Query builder
+        stmt = insert(users_table).values(
+            [
+                {"username": "Bob"},
+                {"username": "Rex"},
+            ]
+        )
+        conn.execute(stmt)
+        conn.commit()
