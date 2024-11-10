@@ -9,6 +9,7 @@ def insert_data():
         session.add_all([worker_volk, worker_bobr])
         session.commit()
 
+
 async def insert_data_async():
     async with async_session_factory() as session:
         worker_bobr = WorkersOrm(username="Bobby1")

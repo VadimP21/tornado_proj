@@ -25,8 +25,10 @@ async_engine = create_async_engine(
 session_factory = sessionmaker(autocommit=False, autoflush=False, bind=sync_engine)
 async_session_factory = async_sessionmaker(async_engine)
 
+
 class BaseProj(DeclarativeBase):
     pass
+
 
 class Base(DeclarativeBase):
     pass

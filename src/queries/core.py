@@ -1,9 +1,8 @@
-
 from sqlalchemy import text
 from sqlalchemy.dialects.mysql import insert
 
-from declarative_view_models import Base
-from imperative_view_models import users_table
+# from declarative_view_models import Base
+from src.imperative_view_models import users_table
 from src.database import sync_engine, async_engine
 from src.imperative_view_models import metadata_obj
 
@@ -42,6 +41,7 @@ from src.imperative_view_models import metadata_obj
 #             }
 #             result.append(prod_params)
 #         return result
+
 
 async def get_123():
     async with async_engine.connect() as conn:

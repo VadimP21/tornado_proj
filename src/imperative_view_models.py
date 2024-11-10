@@ -9,4 +9,3 @@ users_table = Table(
     Column("id", Integer, primary_key=True),
     Column("username", String),
 )
-

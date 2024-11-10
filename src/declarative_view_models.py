@@ -1,7 +1,8 @@
-from multiprocessing.pool import worker
-from typing import List
+import datetime
+import enum
+from typing import List, Annotated
 
-from sqlalchemy import String, ForeignKey
+from sqlalchemy import String, ForeignKey, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship, MappedColumn
 
 from database import BaseProj, Base
@@ -29,9 +30,37 @@ class Product(BaseProj):
         return f"Product(id={self.id!r}, name={self.name!r})"
 
 
+# Переиспользование типов
+int_pk_type = Annotated[int, mapped_column(primary_key=True)]
+created_at_type = Annotated[
+    datetime.datetime,
+    mapped_column(primary_key=True, server_default=text("TIMEZONE('utc',now())")),
+]  # sql query вставка текущего времени на уровне БД
+updated_at_type = Annotated[
+    int,
+    mapped_column(
+        server_default=text("TIMEZONE('utc',now())"), onupdate=datetime.datetime.utcnow
+    ),
+]
+
+
 class WorkersOrm(Base):
     __tablename__ = "users"
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int_pk_type]
     username: Mapped[str]
 
 
+class Workload(enum.Enum):
+    parttime = "parttime"
+    fulltime = "fulltime"
+
+
+class ResumesOrm(Base):
+    __tablename__ = "resumes"
+    id: Mapped[int_pk_type]
+    title: Mapped[str]
+    compensation: Mapped[int | None]
+    workload: Mapped[Workload]
+    worker_id: Mapped[int] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
+    created_at: Mapped[created_at_type]
+    updated_at: Mapped[updated_at_type]
