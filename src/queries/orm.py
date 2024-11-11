@@ -85,8 +85,7 @@ class SyncORM:
                 worker_id=2,
             )
             session.add_all(
-                [resume_jack_1, resume_jack_2,
-                 resume_mike_2, resume_mike_1]
+                [resume_jack_1, resume_jack_2, resume_mike_2, resume_mike_1]
             )
             session.commit()
 
@@ -98,22 +97,26 @@ class SyncORM:
             from resumes
             where title like '%Python%" and compensation > 40000
             group by workload
-            
-            SELECT resumes.workload, CAST(avg(resumes.compensation) AS INTEGER) AS avg_compensation 
-            FROM resumes 
-            WHERE (resumes.title LIKE '%' || 'Python' || '%') AND resumes.compensation > 40000 GROUP BY resumes.workload 
+
+            SELECT resumes.workload, CAST(avg(resumes.compensation) AS INTEGER) AS avg_compensation
+            FROM resumes
+            WHERE (resumes.title LIKE '%' || 'Python' || '%') AND resumes.compensation > 40000 GROUP BY resumes.workload
             HAVING CAST(avg(resumes.compensation) AS INTEGER) > 70000
             """
             query = (
                 select(
                     ResumesOrm.workload,
-                    cast(func.avg(ResumesOrm.compensation), Integer).label("avg_compensation"),
+                    cast(func.avg(ResumesOrm.compensation), Integer).label(
+                        "avg_compensation"
+                    ),
                 )
                 .select_from(ResumesOrm)
-                .filter(and_(
-                    ResumesOrm.title.contains(like_language),
-                    ResumesOrm.compensation > 40000,
-                ))
+                .filter(
+                    and_(
+                        ResumesOrm.title.contains(like_language),
+                        ResumesOrm.compensation > 40000,
+                    )
+                )
                 .group_by(ResumesOrm.workload)
                 .having(cast(func.avg(ResumesOrm.compensation), Integer) > 70000)
             )
