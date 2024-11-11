@@ -8,7 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship, MappedColumn
 from database import BaseProj, Base, str_255
 
 # Переиспользование типов на уровне модуля
-int_pk_type = Annotated[int, mapped_column(primary_key=True)]
+int_pk_type = Annotated[int, mapped_column(primary_key=True, autoincrement=True)]
 created_at_type = Annotated[
     datetime.datetime,
     mapped_column(primary_key=True, server_default=text("TIMEZONE('utc',now())")),
@@ -25,6 +25,7 @@ class WorkersOrm(Base):
     __tablename__ = "workers"
     id: Mapped[int_pk_type]
     username: Mapped[str_255]
+    username_1: Mapped[str_255]
 
 
 class Workload(enum.Enum):
