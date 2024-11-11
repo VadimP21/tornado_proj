@@ -4,8 +4,9 @@ import sys
 
 sys.path.insert(1, os.path.join(sys.path[0], ".."))
 
-from queries.orm import insert_data, insert_data_async
-from queries.core import SyncCore
+from queries.orm import SyncORM, AsyncOrm
+from queries.core import SyncCore, AsyncCore
 
 SyncORM.create_tables()
-# asyncio.run(insert_data_async())
+
+SyncORM.insert_workers()

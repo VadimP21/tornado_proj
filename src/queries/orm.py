@@ -6,10 +6,10 @@ class SyncORM:
 
     @staticmethod
     def create_tables():
-        sync_engine.echo = False
+        # sync_engine.echo = False
         Base.metadata.drop_all(sync_engine)
         Base.metadata.create_all(sync_engine)
-        sync_engine.echo = True
+        # sync_engine.echo = True
 
     @staticmethod
     def insert_workers():
