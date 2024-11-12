@@ -10,13 +10,14 @@ ___queries___
 #     # print(result.keys())
 #     return product_id
 #
-# stmt = select(User).options(selectinload(User.addresses)).order_by(User.id) - OneToMany
+# stmt = select(User).options(selectinload(User.addresses)).order_by(User.id) - ManyToMany or OneToMany
+
 # stmt = (
 #            select(Address)
 #            .options(joinedload(Address.user, innerjoin=True))
 #            .order_by(Address.id)
-#        ) - ManyTo
-#
+#        ) - ManyToOne or OneToOne
+
 # stmt = (
 #     select(Address)
 #     .join(Address.user)

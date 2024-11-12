@@ -5,7 +5,7 @@ from typing import List, Annotated
 from sqlalchemy import String, ForeignKey, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship, MappedColumn
 
-from database import BaseProj, Base, str_255
+from database import Base, str_255
 
 # Переиспользование типов на уровне модуля
 int_pk_type = Annotated[int, mapped_column(primary_key=True, autoincrement=True)]
@@ -26,6 +26,8 @@ class WorkersOrm(Base):
     id: Mapped[int_pk_type]
     username: Mapped[str_255]
 
+    resumes: Mapped[list["ResumesOrm"]] = relationship()
+
 
 class Workload(enum.Enum):
     parttime = "parttime"
@@ -41,3 +43,5 @@ class ResumesOrm(Base):
     worker_id: Mapped[int] = mapped_column(ForeignKey("workers.id", ondelete="CASCADE"))
     created_at: Mapped[created_at_type]
     updated_at: Mapped[updated_at_type]
+
+    worker: Mapped["WorkersOrm"] = relationship()

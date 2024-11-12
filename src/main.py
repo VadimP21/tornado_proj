@@ -11,3 +11,5 @@ SyncORM.create_tables()
 SyncORM.insert_workers()
 SyncORM.insert_resumes()
 SyncORM.insert_additional_resumes()
+
+SyncORM.select_workers_with_lazy_relationship()

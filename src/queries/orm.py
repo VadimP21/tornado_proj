@@ -1,5 +1,6 @@
 from sqlalchemy import select, func, cast, Integer, and_
 from sqlalchemy.dialects.mysql import insert
+from sqlalchemy.orm import joinedload, selectinload
 
 from database import session_factory, async_session_factory, sync_engine, Base, str_255
 from models import WorkersOrm, Workload, ResumesOrm
@@ -22,7 +23,7 @@ class SyncORM:
         sync_engine.echo = False
         Base.metadata.drop_all(sync_engine)
         Base.metadata.create_all(sync_engine)
-        sync_engine.echo = True
+        # sync_engine.echo = True
 
     @staticmethod
     def select_workers():
@@ -171,3 +172,20 @@ class SyncORM:
             res = session.execute(query)
             result = res.all()
             print(result[0].workload, result[1].avg_compensation)
+
+    @staticmethod
+    def select_workers_with_lazy_relationship():
+        """
+        При исполнении select запроса добавляется joinload, для подгрузки связанных сущностей (минус проблема N+1)
+        :return:
+        """
+        with session_factory() as session:
+            sync_engine.echo = True
+            query = select(WorkersOrm).options(selectinload(WorkersOrm.resumes))
+            res = session.execute(query)
+            result = res.scalars().all()
+            # result = res.unique().scalars().all()
+            worker_1_resumes = result[0].resumes
+            print(worker_1_resumes)
+            worker_2_resumes = result[1].resumes
+            print(worker_2_resumes)
