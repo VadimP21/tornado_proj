@@ -1,4 +1,5 @@
 from sqlalchemy import select, func, cast, Integer, and_
+from sqlalchemy.dialects.mysql import insert
 
 from database import session_factory, async_session_factory, sync_engine, Base, str_255
 from models import WorkersOrm, Workload, ResumesOrm
@@ -50,8 +51,8 @@ class SyncORM:
     @staticmethod
     def insert_workers():
         with session_factory() as session:
-            worker_jack = WorkersOrm(username="Jack", username_1="22")
-            worker_mitchel = WorkersOrm(username="Mitchel", username_1="23")
+            worker_jack = WorkersOrm(username="Jack")
+            worker_mitchel = WorkersOrm(username="Mitchel")
             session.add_all([worker_mitchel, worker_jack])
             # session.flush()  # отправляет изменения в БД, присваивает id объектам для дальнейшей работы с ними до commit
 
@@ -87,6 +88,52 @@ class SyncORM:
             session.add_all(
                 [resume_jack_1, resume_jack_2, resume_mike_2, resume_mike_1]
             )
+            session.commit()
+
+    @staticmethod
+    def insert_additional_resumes():
+        with session_factory() as session:
+            workers = [
+                {"username": "Artem"},
+                {"username": "Roman"},
+                {"username": "Petr"},
+            ]
+            resumes = [
+                {
+                    "title": "Python Разработчик",
+                    "compensation": 60000,
+                    "workload": "fulltime",
+                    "worker_id": 3,
+                },
+                {
+                    "title": "Machine learning engineer",
+                    "compensation": 70000,
+                    "workload": "parttime",
+                    "worker_id": 3,
+                },
+                {
+                    "title": "Python Data Scientist",
+                    "compensation": 80000,
+                    "workload": "parttime",
+                    "worker_id": 4,
+                },
+                {
+                    "title": "Python Analyst",
+                    "compensation": 90000,
+                    "workload": "fulltime",
+                    "worker_id": 4,
+                },
+                {
+                    "title": "Python Junior Developer",
+                    "compensation": 100000,
+                    "workload": "fulltime",
+                    "worker_id": 5,
+                },
+            ]
+            insert_workers = insert(WorkersOrm).values(workers)
+            insert_resumes = insert(ResumesOrm).values(resumes)
+            session.execute(insert_workers)
+            session.execute(insert_resumes)
             session.commit()
 
     @staticmethod

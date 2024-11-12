@@ -25,7 +25,6 @@ class WorkersOrm(Base):
     __tablename__ = "workers"
     id: Mapped[int_pk_type]
     username: Mapped[str_255]
-    username_1: Mapped[str_255]
 
 
 class Workload(enum.Enum):
